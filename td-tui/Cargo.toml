@@ -16,3 +16,4 @@ td-util = { path = "../td-util" }
 textwrap = { version = "0.16", default-features = false }
 ratatui = "0.26"
 tui-input = "0.8"
+dirs = "4.0"

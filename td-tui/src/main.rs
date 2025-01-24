@@ -8,7 +8,7 @@ mod keybinds;
 mod ui;
 mod utils;
 
-use std::{error::Error, path::PathBuf};
+use std::{error::Error, path::PathBuf, fs};
 
 use crossterm::{
     execute,
@@ -18,16 +18,18 @@ use ratatui::{backend::CrosstermBackend, Terminal};
 use ui::AppState;
 
 fn main() {
+    let path: PathBuf;
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     if args.is_empty() {
         let name = std::env::args()
             .next()
             .expect("There should always be 1 item");
-        println!("Usage: {name} <database.json>");
-        return;
+        let home_dir = dirs::home_dir().expect("Failed to find home directory");    
+        path = home_dir.join(".td.json");
     }
-
-    let path = PathBuf::from(&args[0]);
+    else {
+        path = PathBuf::from(args[0].clone());
+    }
     let app = match AppState::create(path) {
         Ok(app) => app,
         Err(e) => {
